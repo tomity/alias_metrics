@@ -19,4 +19,8 @@ describe CommandHistory do
     ellipsable.command.should == "ls -la"
     ellipsable.count.should == 1
   end
+
+  it "can load from ~/.zsh_history" do
+    CommandHistory.load_from_zsh_history(@alias_list)
+  end
 end
