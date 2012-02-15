@@ -14,4 +14,9 @@ describe CommandHistory do
     @history.ellipsis_count.should == 5 #becaulse `ls -la` => `l`
   end
 
+  it "can view both count and rate of ellipsiable commands" do
+    ellipsable = @history.ellipsables.values[0]
+    ellipsable.command.should == "ls -la"
+    ellipsable.count.should == 1
+  end
 end
