@@ -10,4 +10,8 @@ describe CommandHistory do
     @history.commands.size.should == 2
   end
 
+  it "can count the number of chars ellipsed" do
+    @history.ellipsis_count.should == 5 #becaulse `ls -la` => `l`
+  end
+
 end
