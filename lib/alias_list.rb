@@ -27,6 +27,15 @@ class AliasList
    command
   end
 
+  def ellipsable?(command)
+    @alias_hash.values.each do |value|
+      if command.start_with?(value + " ") or command == value
+        return true
+      end
+    end
+    false
+  end
+
   private
 
   def initialize(alias_hash)
