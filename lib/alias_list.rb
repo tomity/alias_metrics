@@ -55,10 +55,15 @@ class AliasList
 
   def self.separate_key_value_from_alias_line(line)
     key, value = line.split(/=/)
+    value = remove_single_quotes(value)
+    [key, value]
+  end
+
+  def self.remove_single_quotes(value)
     if value[0, 1] == "'" and value[-1, 1] == "'"
       value = value[1..-2]
     end
-    [key, value]
+    value
   end
 
   def used_subcommand?(command, alias_)
