@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 lib = File.dirname(__FILE__) + '/../lib/'
 $:.unshift lib unless $:.include?(lib)
-require "command_history"
-require "alias_list"
+require "alias_metrics"
 
 @alias_list = AliasList.load_from_stdin
 @history = CommandHistory.load_from_zsh_history(@alias_list)

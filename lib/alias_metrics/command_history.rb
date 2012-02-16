@@ -1,7 +1,3 @@
-require "alias_list"
-require "shortenable"
-require "alias_usage"
-
 class CommandHistory
   attr_accessor :commands
   attr_accessor :shorten_count
