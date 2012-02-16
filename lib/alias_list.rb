@@ -18,6 +18,7 @@ class AliasList
     AliasList.new(alias_hash)
   end
 
+  #NOTE: Since #command >> #alias, this process do fastly
   def expand_command(command)
    @alias_hash.each_pair do |key, value|
      if used_subcommand?(command, key)
@@ -27,6 +28,7 @@ class AliasList
    command
   end
 
+  #NOTE: Since #command >> #alias, this process do fastly
   def applied_alias(command)
    ret = []
    @alias_hash.each_pair do |key, value|
@@ -38,6 +40,7 @@ class AliasList
    ret
   end
 
+  #NOTE: Since #command >> #alias, this process do fastly
   def shortenable?(command)
     @alias_hash.values.each do |value|
       if used_subcommand?(command, value)
