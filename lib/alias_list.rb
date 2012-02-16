@@ -20,7 +20,7 @@ class AliasList
 
   def expand_command(command)
    @alias_hash.each_pair do |key, value|
-     if command.start_with?(key + " ") or command == key
+     if used_subcommand?(command, key)
        command = command.sub(key, value)
      end
    end
@@ -30,7 +30,7 @@ class AliasList
   def applied_alias(command)
    ret = []
    @alias_hash.each_pair do |key, value|
-     if command.start_with?(key + " ") or command == key
+     if used_subcommand?(command, key)
        command = command.sub(key, value)
        ret << [key, value]
      end
@@ -40,7 +40,7 @@ class AliasList
 
   def ellipsable?(command)
     @alias_hash.values.each do |value|
-      if command.start_with?(value + " ") or command == value
+      if used_subcommand?(command, value)
         return true
       end
     end
@@ -59,6 +59,10 @@ class AliasList
       value = value[1..-2]
     end
     [key, value]
+  end
+
+  def used_subcommand?(command, alias_)
+    command == alias_ || command.start_with?(alias_+ " ")
   end
 end
 
