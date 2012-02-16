@@ -41,7 +41,7 @@ class CommandHistory
         begin
           command = parse_command_by_zsh_history_line(line)
           commands << command if command
-        rescue ArgumentError => e #invalid byte sequence in UTF-8
+        rescue ArgumentError #invalid byte sequence in UTF-8
           #do nothing
         end
       end
@@ -52,7 +52,7 @@ class CommandHistory
   private
 
   def self.parse_command_by_zsh_history_line(line)
-    parameter, command = line.split(/;/)
+    command = line.split(/;/)[1]
     return command
   end
 
@@ -70,12 +70,12 @@ class CommandHistory
 
   def update_alias_usages(command)
     applied_alias = self.alias_list.applied_alias(command)
-    applied_alias.each do |alias_, command|
-      if self.alias_usages.has_key?(command)
+    applied_alias.each do |alias_, value|
+      if self.alias_usages.has_key?(value)
         alias_usage = self.alias_usages[alias_]
         alias_usage.count += 1
       else
-        alias_usage = AliasUsage.new(alias_, command)
+        alias_usage = AliasUsage.new(alias_, value)
         self.alias_usages[alias_] = alias_usage
       end
     end
