@@ -20,6 +20,13 @@ describe CommandHistory do
     ellipsable.count.should == 1
   end
 
+  it "can view alias usage" do
+    alias_usage = @history.alias_usages.values[0]
+    alias_usage.alias.should == "l"
+    alias_usage.command.should == "ls -la"
+    alias_usage.count.should == 1
+  end
+
   it "can load from ~/.zsh_history" do
     CommandHistory.load_from_zsh_history(@alias_list)
   end

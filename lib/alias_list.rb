@@ -27,6 +27,17 @@ class AliasList
    command
   end
 
+  def applied_alias(command)
+   ret = []
+   @alias_hash.each_pair do |key, value|
+     if command.start_with?(key + " ") or command == key
+       command = command.sub(key, value)
+       ret << [key, value]
+     end
+   end
+   ret
+  end
+
   def ellipsable?(command)
     @alias_hash.values.each do |value|
       if command.start_with?(value + " ") or command == value
