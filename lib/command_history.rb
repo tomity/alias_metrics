@@ -71,7 +71,7 @@ class CommandHistory
   def update_alias_usages(command)
     applied_alias = self.alias_list.applied_alias(command)
     applied_alias.each do |alias_, value|
-      if self.alias_usages.has_key?(value)
+      if self.alias_usages.has_key?(alias_)
         alias_usage = self.alias_usages[alias_]
         alias_usage.count += 1
       else
