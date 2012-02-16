@@ -1,1 +1,30 @@
-new repository
+This tool is to visualize alias usage to parse command history. You can evaluate whether you use alias efficiently or not.
+* It can show reduced types and more redusable types
+* It can show how degree you use each alias
+
+The visabliable shell scripts is the followings:
+* zsh (${HOME}/.zsh-history)
+
+
+Install:
+
+gem install --source http://github.com/tomity/alias_metrics/raw/master/ alias_metrics
+
+or
+
+git clone git@github.com:tomity/alias_metrics.git
+cd alias_metrics
+gem build alias_metrics.gemspec
+gem install alias_metrics-xxx.gem
+
+
+How to use:
+
+alias | alias_metrics
+
+
+Todo:
+
+* it can parse other shell scrpt
+
+
