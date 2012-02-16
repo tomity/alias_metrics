@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+lib = File.dirname(__FILE__) + '/../lib/'
+$:.unshift lib unless $:.include?(lib)
 require "alias_metrics"
 
 @alias_list = AliasList.load_from_stdin
