@@ -12,18 +12,18 @@ class CommandHistory
   ZSH_HISTORY_FILE = "#{ENV["HOME"]}/.zsh_history"
 
   def initialize(commands, alias_list)
-    @alias_list = alias_list
-    @commands = []
-    @ellipsis_count = 0
-    @ellipsables = Hash.new
-    @alias_usages = Hash.new
+    self.alias_list = alias_list
+    self.commands = []
+    self.ellipsis_count = 0
+    self.ellipsables = Hash.new
+    self.alias_usages = Hash.new
 
     commands.each do |command|
       update_ellipsables(command)
       update_alias_usages(command)
-      command_expanded = alias_list.expand_command(command)
-      @ellipsis_count += command_expanded.length - command.length
-      @commands << command_expanded
+      command_expanded = self.alias_list.expand_command(command)
+      self.ellipsis_count += command_expanded.length - command.length
+      self.commands << command_expanded
     end
   end
 
@@ -53,25 +53,25 @@ class CommandHistory
 
   def update_ellipsables(command)
     if alias_list.ellipsable?(command)
-      if @ellipsables.has_key?(command)
-        ellipsable = @ellipsables[command]
+      if self.ellipsables.has_key?(command)
+        ellipsable = self.ellipsables[command]
         ellipsable.count += 1
       else
         ellipsable = Ellipsable.new(command)
-        @ellipsables[command] = ellipsable
+        self.ellipsables[command] = ellipsable
       end
     end
   end
 
   def update_alias_usages(command)
-    applied_alias = alias_list.applied_alias(command)
+    applied_alias = self.alias_list.applied_alias(command)
     applied_alias.each do |alias_, command|
-      if @alias_usages.has_key?(command)
-        alias_usage = @alias_usages[alias_]
+      if self.alias_usages.has_key?(command)
+        alias_usage = self.alias_usages[alias_]
         alias_usage.count += 1
       else
         alias_usage = AliasUsage.new(alias_, command)
-        @alias_usages[alias_] = alias_usage
+        self.alias_usages[alias_] = alias_usage
       end
     end
   end
