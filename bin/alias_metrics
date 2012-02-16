@@ -8,24 +8,20 @@ require "alias_metrics"
 command_length_all = @history.commands.map{|command| command.size}.inject(0){|partial_sum, size| partial_sum + size}
 shorten_count = @history.shorten_count
 shorten_rate = shorten_count.to_f / command_length_all
+shortenable_count_all = @history.shortenables.values.inject(0){|partial_sum, shortenable| partial_sum + shortenable.count * [0, (shortenable.command.size - shortenable.alias.size)].max }
+shortenable_rate = shortenable_count_all.to_f / command_length_all
 
-puts "shorten rate: #{shorten_rate}"
+puts "You reduce #{sprintf("%0.2f", shorten_rate * 100)}% types (#{shorten_count} / #{command_length_all})"
+puts "If you use alias all, you can reduce more #{sprintf("%0.2f", shortenable_rate * 100)}% types (#{shortenable_count_all} / #{command_length_all})"
 puts
 
 puts "You often forget the following alias"
-puts "alias\tcount\tcommand"
+puts "alias\t#used\t#forgot\tforgot rate(%)\tcommand"
 keys = @history.shortenables.keys.sort{|a, b| @history.shortenables[a].count <=> @history.shortenables[b].count }.reverse
 keys.each do |key|
-  value = @history.shortenables[key]
-  puts "#{value.alias}\t#{value.count}\t#{value.command}"
-end
-puts
-
-puts "You use the following alias correctly"
-puts "alias\tcount\tcommand"
-keys = @history.alias_usages.keys.sort{|a, b| @history.alias_usages[a].count <=> @history.alias_usages[b].count }.reverse
-keys.each do |key|
-  value = @history.alias_usages[key]
-  puts "#{value.alias}\t#{value.count}\t#{value.command}"
+  shortenable = @history.shortenables[key]
+  alias_usage = @history.alias_usages[shortenable.alias]
+  forgot_rate = shortenable.count.to_f / (alias_usage.count + shortenable.count)
+  puts "#{shortenable.alias}\t#{alias_usage.count}\t#{shortenable.count}\t#{sprintf("%0.2f", forgot_rate*100)}\t#{shortenable.command}"
 end
 
