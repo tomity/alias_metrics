@@ -1,4 +1,4 @@
-require "alias_list"
+require "alias_metrics"
 
 describe AliasList do
   it "should output `ls -la` for the command `l` " do

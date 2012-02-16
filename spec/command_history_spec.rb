@@ -1,4 +1,4 @@
-require "command_history"
+require "alias_metrics"
 
 describe CommandHistory do
   before do
