@@ -30,4 +30,9 @@ describe CommandHistory do
   it "can load from ~/.zsh_history" do
     CommandHistory.load_from_zsh_history(@alias_list)
   end
+
+  it "should store expanded commands" do
+    @history.commands[0].should == "ls -la"
+    @history.commands[1].should == "ls -la"
+  end
 end

@@ -23,7 +23,7 @@ class CommandHistory
       update_alias_usages(command)
       command_expanded = alias_list.expand_command(command)
       @ellipsis_count += command_expanded.length - command.length
-      @commands << command
+      @commands << command_expanded
     end
   end
 
