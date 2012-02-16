@@ -1,4 +1,6 @@
 class AliasList
+  attr_accessor :alias_hash
+
   def self.load_from_lines(lines)
     alias_hash = Hash::new
     lines.each do |line|

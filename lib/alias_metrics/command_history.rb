@@ -13,6 +13,10 @@ class CommandHistory
     self.shorten_count = 0
     self.shortenables = Hash.new
     self.alias_usages = Hash.new
+    alias_list.alias_hash.each_pair do |alias_, value|
+      self.alias_usages[alias_] = AliasUsage.new(alias_, value)
+      self.shortenables[value] = Shortenable.new(alias_, value)
+    end
 
     commands.each do |command|
       update_shortenables(command)
@@ -56,7 +60,6 @@ class CommandHistory
     if alias_list.shortenable?(command)
       shortenable_alias_list = alias_list.shortenable_alias(command)
       shortenable_alias_list.each do |key, value|
-        self.shortenables[value] ||= Shortenable.new(key, value)
         self.shortenables[value].count += 1
       end
     end
@@ -65,7 +68,6 @@ class CommandHistory
   def update_alias_usages(command)
     applied_alias = self.alias_list.applied_alias(command)
     applied_alias.each do |alias_, value|
-      self.alias_usages[alias_] ||= AliasUsage.new(alias_, value)
       self.alias_usages[alias_].count += 1
     end
   end
