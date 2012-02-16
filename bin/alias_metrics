@@ -8,4 +8,22 @@ shorten_count = @history.shorten_count
 shorten_rate = shorten_count.to_f / command_length_all
 
 puts "shorten rate: #{shorten_rate}"
+puts
+
+puts "You often forget the following alias"
+puts "alias\tcount\tcommand"
+keys = @history.shortenables.keys.sort{|a, b| @history.shortenables[a].count <=> @history.shortenables[b].count }.reverse
+keys.each do |key|
+  value = @history.shortenables[key]
+  puts "#{value.alias}\t#{value.count}\t#{value.command}"
+end
+puts
+
+puts "You use the following alias correctly"
+puts "alias\tcount\tcommand"
+keys = @history.alias_usages.keys.sort{|a, b| @history.alias_usages[a].count <=> @history.alias_usages[b].count }.reverse
+keys.each do |key|
+  value = @history.alias_usages[key]
+  puts "#{value.alias}\t#{value.count}\t#{value.command}"
+end
 
