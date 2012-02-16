@@ -56,13 +56,8 @@ class CommandHistory
     if alias_list.shortenable?(command)
       shortenable_alias_list = alias_list.shortenable_alias(command)
       shortenable_alias_list.each do |key, value|
-        if self.shortenables.has_key?(value)
-          shortenable = self.shortenables[value]
-          shortenable.count += 1
-        else
-          shortenable = Shortenable.new(key, value)
-          self.shortenables[value] = shortenable
-        end
+        self.shortenables[value] ||= Shortenable.new(key, value)
+        self.shortenables[value].count += 1
       end
     end
   end

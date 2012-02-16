@@ -3,9 +3,9 @@ class Shortenable
   attr_accessor :alias
   attr_accessor :count
 
-  def initialize(alias_, command, count = 1)
-    @alias = alias_.freeze
-    @command = command.freeze
-    @count = count
+  def initialize(alias_, command)
+    self.alias = alias_.freeze
+    self.command = command.freeze
+    self.count = 0
   end
 end
