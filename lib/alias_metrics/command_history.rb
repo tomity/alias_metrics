@@ -22,7 +22,7 @@ class CommandHistory
       update_shortenables(command)
       update_alias_usages(command)
       command_expanded = self.alias_list.expand_command(command)
-      self.shorten_count += command_expanded.length - command.length
+      self.shorten_count += [0, command_expanded.length - command.length].max
       self.commands << command_expanded
     end
     self.alias_list     = self.alias_list.freeze
@@ -59,8 +59,8 @@ class CommandHistory
   def update_shortenables(command)
     if alias_list.shortenable?(command)
       shortenable_alias_list = alias_list.shortenable_alias(command)
-      shortenable_alias_list.each do |key, value|
-        self.shortenables[value].count += 1
+      shortenable_alias_list.each do |alias_, extension|
+        self.shortenables[extension].count += 1 if shortenable?(alias_, extension)
       end
     end
   end
@@ -70,6 +70,10 @@ class CommandHistory
     applied_alias.each do |alias_, value|
       self.alias_usages[alias_].count += 1
     end
+  end
+
+  def shortenable?(alias_, command)
+    command.size > alias_.size
   end
 
 end
