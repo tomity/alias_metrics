@@ -50,6 +50,16 @@ class AliasList
     false
   end
 
+  def shortenable_alias(command)
+   ret = []
+   @alias_hash.each_pair do |key, value|
+     if used_subcommand?(command, value)
+       ret << [key, value]
+     end
+   end
+   ret
+  end
+
   private
 
   def initialize(alias_hash)

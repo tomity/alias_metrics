@@ -3,7 +3,7 @@ require "alias_metrics"
 describe CommandHistory do
   before do
     @alias_list = AliasList.load_from_lines(["l='ls -la'"])
-    @history = CommandHistory.new(["l", "l", "ls -la", "ls -la"], @alias_list)
+    @history = CommandHistory.new(["l", "l -h", "ls -la", "ls -la -h"], @alias_list)
   end
 
   it "can get the number of commands" do
@@ -33,8 +33,8 @@ describe CommandHistory do
 
   it "should store expanded commands" do
     @history.commands[0].should == "ls -la"
-    @history.commands[1].should == "ls -la"
+    @history.commands[1].should == "ls -la -h"
     @history.commands[2].should == "ls -la"
-    @history.commands[3].should == "ls -la"
+    @history.commands[3].should == "ls -la -h"
   end
 end
