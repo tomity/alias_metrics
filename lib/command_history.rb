@@ -1,11 +1,11 @@
 require "alias_list"
-require "ellipsable"
+require "shortenable"
 require "alias_usage"
 
 class CommandHistory
   attr_accessor :commands
-  attr_accessor :ellipsis_count
-  attr_accessor :ellipsables
+  attr_accessor :shorten_count
+  attr_accessor :shortenables
   attr_accessor :alias_usages
   attr_accessor :alias_list
 
@@ -14,21 +14,21 @@ class CommandHistory
   def initialize(commands, alias_list)
     self.alias_list = alias_list
     self.commands = []
-    self.ellipsis_count = 0
-    self.ellipsables = Hash.new
+    self.shorten_count = 0
+    self.shortenables = Hash.new
     self.alias_usages = Hash.new
 
     commands.each do |command|
-      update_ellipsables(command)
+      update_shortenables(command)
       update_alias_usages(command)
       command_expanded = self.alias_list.expand_command(command)
-      self.ellipsis_count += command_expanded.length - command.length
+      self.shorten_count += command_expanded.length - command.length
       self.commands << command_expanded
     end
     self.alias_list     = self.alias_list.freeze
     self.commands       = self.commands.freeze
-    self.ellipsis_count = self.ellipsis_count.freeze
-    self.ellipsables    = self.ellipsables.freeze
+    self.shorten_count = self.shorten_count.freeze
+    self.shortenables    = self.shortenables.freeze
     self.alias_usages   = self.alias_usages.freeze
   end
 
@@ -56,14 +56,14 @@ class CommandHistory
     return command
   end
 
-  def update_ellipsables(command)
-    if alias_list.ellipsable?(command)
-      if self.ellipsables.has_key?(command)
-        ellipsable = self.ellipsables[command]
-        ellipsable.count += 1
+  def update_shortenables(command)
+    if alias_list.shortenable?(command)
+      if self.shortenables.has_key?(command)
+        shortenable = self.shortenables[command]
+        shortenable.count += 1
       else
-        ellipsable = Ellipsable.new(command)
-        self.ellipsables[command] = ellipsable
+        shortenable = Shortenable.new(command)
+        self.shortenables[command] = shortenable
       end
     end
   end

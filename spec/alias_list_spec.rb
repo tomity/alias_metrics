@@ -21,19 +21,19 @@ describe AliasList do
     alias_list.expand_command("slope").should == "slope"
   end
 
-  it "should output `ls -la` is ellipsable" do
+  it "should output `ls -la` is shortenable" do
     alias_list = AliasList.load_from_lines(["l='ls -la'"])
-    alias_list.ellipsable?("ls -la").should == true
+    alias_list.shortenable?("ls -la").should == true
   end
 
-  it "should output `ls -l` is not ellipsable" do
+  it "should output `ls -l` is not shortenable" do
     alias_list = AliasList.load_from_lines(["l='ls -la'"])
-    alias_list.ellipsable?("ls -l").should == false
+    alias_list.shortenable?("ls -l").should == false
   end
 
-  it "should output `ls -l` is not ellipsable" do #Is this specification correct?
+  it "should output `ls -l` is not shortenable" do #Is this specification correct?
     alias_list = AliasList.load_from_lines(["l='ls -la'"])
-    alias_list.ellipsable?("ls -al").should == false
+    alias_list.shortenable?("ls -al").should == false
   end
 
 end

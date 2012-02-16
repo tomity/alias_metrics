@@ -38,7 +38,7 @@ class AliasList
    ret
   end
 
-  def ellipsable?(command)
+  def shortenable?(command)
     @alias_hash.values.each do |value|
       if used_subcommand?(command, value)
         return true

@@ -1,4 +1,4 @@
-class Ellipsable
+class Shortenable
   attr_accessor :command
   attr_accessor :count
 
