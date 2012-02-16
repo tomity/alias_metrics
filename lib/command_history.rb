@@ -20,17 +20,8 @@ class CommandHistory
 
     commands.each do |command|
       update_ellipsables(command)
+      update_alias_usages(command)
       command_expanded = alias_list.expand_command(command)
-      applied_alias = alias_list.applied_alias(command)
-      applied_alias.each do |alias_, command|
-        if @alias_usages.has_key?(command)
-          alias_usage = @alias_usages[alias_]
-          alias_usage.count += 1
-        else
-          alias_usage = AliasUsage.new(alias_, command)
-          @alias_usages[alias_] = alias_usage
-        end
-      end
       @ellipsis_count += command_expanded.length - command.length
       @commands << command
     end
@@ -68,6 +59,19 @@ class CommandHistory
       else
         ellipsable = Ellipsable.new(command)
         @ellipsables[command] = ellipsable
+      end
+    end
+  end
+
+  def update_alias_usages(command)
+    applied_alias = alias_list.applied_alias(command)
+    applied_alias.each do |alias_, command|
+      if @alias_usages.has_key?(command)
+        alias_usage = @alias_usages[alias_]
+        alias_usage.count += 1
+      else
+        alias_usage = AliasUsage.new(alias_, command)
+        @alias_usages[alias_] = alias_usage
       end
     end
   end
