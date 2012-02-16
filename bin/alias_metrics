@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+lib = File.dirname(__FILE__) + '/../lib/'
+$:.unshift lib unless $:.include?(lib)
+require "command_history"
+require "alias_list"
+
+@alias_list = AliasList.load_from_stdin
+@history = CommandHistory.load_from_zsh_history(@alias_list)
+command_length_all = @history.commands.map{|command| command.size}.inject(0){|partial_sum, size| partial_sum + size}
+shorten_count = @history.shorten_count
+shorten_rate = shorten_count.to_f / command_length_all
+
+puts "shorten rate: #{shorten_rate}"
+
