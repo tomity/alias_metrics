@@ -5,8 +5,8 @@ class AliasUsage
   attr_accessor :count
 
   def initialize(alias_, command, count = 1)
-    self.alias = alias_
-    self.command = command
+    self.alias = alias_.freeze
+    self.command = command.freeze
     self.count = count
   end
 

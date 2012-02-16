@@ -25,6 +25,11 @@ class CommandHistory
       self.ellipsis_count += command_expanded.length - command.length
       self.commands << command_expanded
     end
+    self.alias_list     = self.alias_list.freeze
+    self.commands       = self.commands.freeze
+    self.ellipsis_count = self.ellipsis_count.freeze
+    self.ellipsables    = self.ellipsables.freeze
+    self.alias_usages   = self.alias_usages.freeze
   end
 
   def self.load_from_zsh_history(alias_list, history_file = ZSH_HISTORY_FILE)

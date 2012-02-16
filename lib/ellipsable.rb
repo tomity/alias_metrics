@@ -3,7 +3,7 @@ class Ellipsable
   attr_accessor :count
 
   def initialize(command, count = 1)
+    @command = command.freeze
     @count = count
-    @command = command
   end
 end

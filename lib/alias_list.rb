@@ -50,7 +50,7 @@ class AliasList
   private
 
   def initialize(alias_hash)
-    @alias_hash = alias_hash
+    @alias_hash = alias_hash.freeze
   end
 
   def self.separate_key_value_from_alias_line(line)
