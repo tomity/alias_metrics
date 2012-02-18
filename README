@@ -6,25 +6,44 @@ The visabliable shell scripts is the followings:
 * zsh (${HOME}/.zsh-history)
 
 
-Install:
-
-gem install --source http://github.com/tomity/alias_metrics/raw/master/ alias_metrics
-
-or
-
-git clone git@github.com:tomity/alias_metrics.git
-cd alias_metrics
-gem build alias_metrics.gemspec
-gem install alias_metrics-xxx.gem
-
-
 How to use:
 
-alias | alias_metrics
+$ alias | alias_metrics
+
+
+Case Study:
+
+$ alias | alias_metrics
+>>
+
+You reduce 10.25% types (29814 / 290970)
+
+If you use alias all, you can reduce more 3.98% types (11575 / 290970)
+
+
+
+ You often forget the following alias
+
+ alias   #used   #forgot forgot rate(%)  command
+
+ g       9       1530    99.42   git
+
+ _       0       210     100.00  sudo
+
+ gco     24      197     89.14   git checkout
+
+ ga      516     190     26.91   git add
+
+ ...
+<<
+I regist alias g=`git`, but I often forgot to use this alias. This result show I typed "git" 1530 times. So I can reduce 1530 * 2 = 3060 types by typing "g" instead of "git".
 
 
 Todo:
 
-* it can parse other shell scrpt
+* It can parse other shell scrpt(bash, csh, etc...)
+* Add the function that recommends alias that can reduce your types by setting it
+* Add the function that show Gold Standard
+* Acceleration
 
 
