@@ -11,8 +11,8 @@ shorten_rate = shorten_count.to_f / command_length_all
 shortenable_count_all = @history.shortenables.values.inject(0){|partial_sum, shortenable| partial_sum + shortenable.count * [0, (shortenable.command.size - shortenable.alias.size)].max }
 shortenable_rate = shortenable_count_all.to_f / command_length_all
 
-puts "You reduce #{sprintf("%0.2f", shorten_rate * 100)}% types (#{shorten_count} / #{command_length_all})"
-puts "If you use alias all, you can reduce more #{sprintf("%0.2f", shortenable_rate * 100)}% types (#{shortenable_count_all} / #{command_length_all})"
+puts "You reduce #{sprintf("%0.2f", shorten_rate * 100)}% types (#{shorten_count} types/ #{command_length_all} types)"
+puts "If you use alias all, you can reduce more #{sprintf("%0.2f", shortenable_rate * 100)}% types (#{shortenable_count_all} types / #{command_length_all} types)"
 puts
 
 puts "You often forget the following alias"
