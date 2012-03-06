@@ -67,4 +67,19 @@ describe CommandHistory do
     @history.commands[3].should == "ls -la -h"
     @history.commands[4].should == "man"
   end
+
+  it "should get count for fragment" do
+    @history.fragment["ls"].count.should == 4
+    @history.fragment["ls -la"].count.should == 4
+    @history.fragment["ls -la -h"].count.should == 2
+    @history.fragment["l"].count.should == 0
+    @history.fragment["man"].count.should == 1
+  end
+
+  it "should get count for fragment" do
+    @history.fragment["ls -la -h"].types.should == 9 * 2
+    @history.fragment["ls -la -h"].shorten_types("ll").should == (9 - 2) * 2
+    @history.fragment["ls -la"].types.should == 6 * 4
+    @history.fragment["ls -la"].shorten_types("l").should == (6 - 1) * 4
+  end
 end

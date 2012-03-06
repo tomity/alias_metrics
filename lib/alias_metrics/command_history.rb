@@ -4,6 +4,7 @@ class CommandHistory
   attr_accessor :shortenables
   attr_accessor :alias_usages
   attr_accessor :alias_list
+  attr_accessor :fragment
 
   ZSH_HISTORY_FILE = "#{ENV["HOME"]}/.zsh_history"
 
@@ -17,6 +18,7 @@ class CommandHistory
       self.alias_usages[alias_] = AliasUsage.new(alias_, value)
       self.shortenables[value] = Shortenable.new(alias_, value)
     end
+    self.fragment = Hash.new{|h, key| h[key] = Fragment.new(key)}
 
     commands.each do |command|
       update_shortenables(command)
@@ -24,6 +26,9 @@ class CommandHistory
       command_expanded = self.alias_list.expand_command(command)
       self.shorten_count += [0, command_expanded.length - command.length].max
       self.commands << command_expanded
+      fragments(command_expanded).each do |fragment_body|
+        self.fragment[fragment_body].count += 1
+      end
     end
     self.alias_list     = self.alias_list.freeze
     self.commands       = self.commands.freeze
@@ -76,4 +81,30 @@ class CommandHistory
     command.size > alias_.size
   end
 
+  def fragments(command)
+    ret = Array.new
+    units = command.split(/\s/)
+    substr = units.shift
+    if command_fragment?(substr)
+      ret << substr
+      units.each do |unit|
+        break if not command_fragment?(unit)
+        substr = substr + " " + unit
+        ret << substr if fragment?(substr, unit)
+      end
+    end
+    ret
+  end
+
+  def command_fragment?(unit)
+    unit =~ /^[a-zA-Z\-|]+$/
+  end
+
+  def fragment?(substr, last_unit)
+    !pipe?(last_unit)
+  end
+
+  def pipe?(unit)
+    unit == "|"
+  end
 end
