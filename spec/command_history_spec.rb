@@ -11,7 +11,7 @@ describe CommandHistory do
   end
 
   it "can count the number of chars shorten" do
-    @history.shorten_count.should == 10 #becaulse (`ls -la` => `l`) * 2
+    @history.shorten_count.should == 10 #because (`ls -la` => `l`) * 2
   end
 
   it "should be count is 2 when ls -la" do
