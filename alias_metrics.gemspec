@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'alias_metrics'
-  spec.version     = '0.1'
+  spec.version     = '0.1.1'
   spec.summary     = "This tool is to visualize alias usage to parse command history. You can evaluate whether you use alias efficiently or not."
   spec.author      = ["Kohei Tomita"]
   spec.email       = "tommy.fmale@gmail.com"
