@@ -6,6 +6,11 @@ The visabliable shell scripts is the followings:
 * zsh (${HOME}/.zsh-history)
 
 
+Install:
+
+gem install alias_metrics
+
+
 How to use:
 
 $ alias | alias_metrics
