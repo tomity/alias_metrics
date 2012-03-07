@@ -5,7 +5,13 @@ require "alias_metrics"
 
 @alias_list = AliasList.load_from_stdin
 @history = CommandHistory.load_from_zsh_history(@alias_list)
-@history.fragment.values.select{|a| a.count >= 5}.sort{|a, b| a.types <=> b.types }.reverse.each do |value|
-  puts "#{value.types} #{value.body}"
+fragments = @history.fragment.values.select{|a| a.count >= 5}
+max_fragment_size = fragments.map{|a| a.body.size }.max
+fragments.sort{|a, b| a.types <=> b.types }.reverse.each do |value|
+  if @alias_list.shortenable?(value.body)
+    puts "#{value.types}\t#{value.body + " " * (max_fragment_size - value.body.size)} => #{@alias_list.shorten_command(value.body).map{|h| "\"#{h}\""}.join(",")}"
+  else
+    puts "#{value.types}\t#{value.body + " " * (max_fragment_size - value.body.size)} => no alias"
+  end
 end
 
