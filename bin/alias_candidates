@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+lib = File.dirname(__FILE__) + '/../lib/'
+$:.unshift lib unless $:.include?(lib)
+require "alias_metrics"
+
+@alias_list = AliasList.load_from_stdin
+@history = CommandHistory.load_from_zsh_history(@alias_list)
+@history.fragment.values.select{|a| a.count >= 5}.sort{|a, b| a.types <=> b.types }.reverse.each do |value|
+  puts "#{value.types} #{value.body}"
+end
+
