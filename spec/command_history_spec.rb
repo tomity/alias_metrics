@@ -2,16 +2,16 @@ require "alias_metrics"
 
 describe CommandHistory do
   before do
-    @alias_list = AliasList.load_from_lines(["l='ls -la'", "ga=git add", "run-help=man"])
-    @history = CommandHistory.new(["l", "l -h", "ls -la", "ls -la -h", "man"], @alias_list)
+    @alias_list = AliasList.load_from_lines(["l='ls -la'", "g=git", "ga=git add", "run-help=man"])
+    @history = CommandHistory.new(["l", "l -h", "ls -la", "ls -la -h", "ga", "git add", "man"], @alias_list)
   end
 
   it "can get the number of commands" do
-    @history.commands.size.should == 5
+    @history.commands.size.should == 7
   end
 
   it "can count the number of chars shorten" do
-    @history.shorten_count.should == 10 #because (`ls -la` => `l`) * 2
+    @history.shorten_count.should == 15 #because (`ls -la` => `l`) * 2 + (`git add` => `ga`)
   end
 
   it "should be count is 2 when ls -la" do
@@ -21,11 +21,11 @@ describe CommandHistory do
     shortenable.count.should == 2
   end
 
-  it "should be count is 0 when git add" do
+  it "should be count is 1 when git add" do
     shortenable = @history.shortenables["git add"]
     shortenable.alias.should == "ga"
     shortenable.command.should == "git add"
-    shortenable.count.should == 0
+    shortenable.count.should == 1
   end
 
   it "should be count is 0 when ls -la because run-help is longer than man" do
@@ -46,7 +46,7 @@ describe CommandHistory do
     alias_usage = @history.alias_usages["ga"]
     alias_usage.alias.should == "ga"
     alias_usage.command.should == "git add"
-    alias_usage.count.should == 0
+    alias_usage.count.should == 1
   end
 
   it "should be alias usage is 0 when run-help" do
@@ -65,7 +65,9 @@ describe CommandHistory do
     @history.commands[1].should == "ls -la -h"
     @history.commands[2].should == "ls -la"
     @history.commands[3].should == "ls -la -h"
-    @history.commands[4].should == "man"
+    @history.commands[4].should == "git add"
+    @history.commands[5].should == "git add"
+    @history.commands[6].should == "man"
   end
 
   it "should get count for fragment" do
@@ -73,6 +75,9 @@ describe CommandHistory do
     @history.fragment["ls -la"].count.should == 4
     @history.fragment["ls -la -h"].count.should == 2
     @history.fragment["l"].count.should == 0
+    @history.fragment["ga"].count.should == 0
+    @history.fragment["git"].count.should == 2
+    @history.fragment["git add"].count.should == 2
     @history.fragment["man"].count.should == 1
   end
 
