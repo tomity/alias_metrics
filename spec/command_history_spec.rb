@@ -21,6 +21,13 @@ describe CommandHistory do
     shortenable.count.should == 2
   end
 
+  it "should be count is 1 when git" do
+    shortenable = @history.shortenables["g"]
+    shortenable.alias.should == "g"
+    shortenable.command.should == "git"
+    shortenable.count.should == 1
+  end
+
   it "should be count is 1 when git add" do
     shortenable = @history.shortenables["ga"]
     shortenable.alias.should == "ga"
@@ -40,6 +47,13 @@ describe CommandHistory do
     alias_usage.alias.should == "l"
     alias_usage.command.should == "ls -la"
     alias_usage.count.should == 2
+  end
+
+  it "should be alias usage is 0 when g" do
+    alias_usage = @history.alias_usages["g"]
+    alias_usage.alias.should == "g"
+    alias_usage.command.should == "git"
+    alias_usage.count.should == 0
   end
 
   it "should be alias usage is 0 when ga" do
