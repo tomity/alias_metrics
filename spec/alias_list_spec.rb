@@ -64,6 +64,14 @@ describe AliasList do
     end
   end
 
+  describe "shorten_command" do
+    it "should shorten the command `git reset --hard HEAD\^` to `grhh` or `g reset --hard HEAD\^`" do
+      alias_list = AliasList.load_from_lines(["g=git", "grhh='git reset --hard HEAD\^'"])
+      alias_list.shorten_command("git reset --hard HEAD\^").should include "grhh"
+      alias_list.shorten_command("git reset --hard HEAD\^").should include "g reset --hard HEAD\^"
+    end
+  end
+
 end
 
 
