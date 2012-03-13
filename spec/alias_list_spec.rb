@@ -26,6 +26,16 @@ describe AliasList do
     end
   end
 
+  describe "applied_alias" do
+    it "can get the fact that command `l` can use alias `l`" do
+      @alias_list.applied_alias("l").should include ["l", "ls -la"]
+    end
+
+    it "can get the fact that command `l` can use alias `l`" do
+      @alias_list.applied_alias("l -h").should include ["l", "ls -la"]
+    end
+  end
+
   describe "shortenable" do
     it "should output `ls -la` is shortenable" do
       @alias_list.shortenable?("ls -la").should == true
