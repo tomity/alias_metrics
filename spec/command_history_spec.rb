@@ -15,21 +15,21 @@ describe CommandHistory do
   end
 
   it "should be count is 2 when ls -la" do
-    shortenable = @history.shortenables["ls -la"]
+    shortenable = @history.shortenables["l"]
     shortenable.alias.should == "l"
     shortenable.command.should == "ls -la"
     shortenable.count.should == 2
   end
 
   it "should be count is 1 when git add" do
-    shortenable = @history.shortenables["git add"]
+    shortenable = @history.shortenables["ga"]
     shortenable.alias.should == "ga"
     shortenable.command.should == "git add"
     shortenable.count.should == 1
   end
 
   it "should be count is 0 when ls -la because run-help is longer than man" do
-    shortenable = @history.shortenables["man"]
+    shortenable = @history.shortenables["run-help"]
     shortenable.alias.should == "run-help"
     shortenable.command.should == "man"
     shortenable.count.should == 0

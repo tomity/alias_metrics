@@ -16,7 +16,7 @@ class CommandHistory
     self.alias_usages = Hash.new
     alias_list.alias_hash.each_pair do |alias_, value|
       self.alias_usages[alias_] = AliasUsage.new(alias_, value)
-      self.shortenables[value] = Shortenable.new(alias_, value)
+      self.shortenables[alias_] = Shortenable.new(alias_, value)
     end
     self.fragment = Hash.new{|h, key| h[key] = Fragment.new(key)}
 
@@ -65,7 +65,7 @@ class CommandHistory
     if alias_list.shortenable?(command)
       shortenable_alias_list = alias_list.shortenable_alias(command)
       shortenable_alias_list.each do |alias_, extension|
-        self.shortenables[extension].count += 1 if shortenable?(alias_, extension)
+        self.shortenables[alias_].count += 1 if shortenable?(alias_, extension)
       end
     end
   end
