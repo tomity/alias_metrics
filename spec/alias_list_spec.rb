@@ -5,52 +5,56 @@ describe AliasList do
     @alias_list = AliasList.load_from_lines(["l='ls -la'", "sl=ls", "grhh='git reset --hard HEAD\^'"])
   end
   describe "expand_command" do
-    it "should output `ls -la` for the command `l` " do
+    it "should expand the command `l` to the command `ls -la`" do
       @alias_list.expand_command("l").should == "ls -la"
     end
 
-    it "should output `ls -la -h` for the command `l -h` " do
+    it "should expand the command `l -h` to the command `ls -la -h`" do
       @alias_list.expand_command("l -h").should == "ls -la -h"
     end
 
-    it "should output `ls` for the command `sl` " do
+    it "should expand the command `sl` to the command `ls`" do
       @alias_list.expand_command("sl").should == "ls"
     end
 
-    it "should output `ls -l` for the command `sl -l` " do
+    it "should expand the command `sl -l` to the command `ls -l`" do
       @alias_list.expand_command("sl -l").should == "ls -l"
     end
 
-    it "should output `slope` for the command `slope` because this command is slope, but is not sl" do
+    it "should not expand the command `slope` to the command `lsope` because this command is not `sl`" do
       @alias_list.expand_command("slope").should == "slope"
     end
   end
 
   describe "applied_alias" do
-    it "can get the fact that command `l` can use alias `l`" do
+    it "should get the fact that command `l` can use alias `l`" do
       @alias_list.applied_alias("l").should include ["l", "ls -la"]
     end
 
-    it "can get the fact that command `l` can use alias `l`" do
+    it "should get the fact that command `l -h` can use alias `l`" do
       @alias_list.applied_alias("l -h").should include ["l", "ls -la"]
     end
   end
 
   describe "shortenable" do
-    it "should output `ls -la` is shortenable" do
+    it "should get the fact that `ls -la` can be shortenable" do
       @alias_list.shortenable?("ls -la").should == true
     end
 
-    it "should output `ls -la -h` for the command `l -h` " do
+    it "should get the fact that `ls -la -h` can be shortenable" do
       @alias_list.shortenable?("ls -la -h").should == true
     end
 
-    it "should output `git reset --hard` is not shortenable" do
+    it "should get the fact that `git reset --hard` can not be shortenable" do
       @alias_list.shortenable?("git reset --hard").should == false
     end
 
-    it "should output `git HEAD\^ --hard` is not shortenable" do #Is this specification correct?
+    it "should get the fact that `git reset HEAD\^ --hard` can not be shortenable" do
       @alias_list.shortenable?("git reset HEAD\^ --hard").should == false
+    end
+
+    it "should get the fact that `git reset --hard HEAD\^` can be shortenable" do
+      @alias_list.shortenable?("git reset --hard HEAD\^").should == true
     end
   end
 
