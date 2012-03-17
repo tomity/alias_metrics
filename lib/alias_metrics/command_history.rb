@@ -71,10 +71,8 @@ class CommandHistory
   end
 
   def update_alias_usages(command)
-    applied_alias = self.alias_list.applied_alias(command)
-    applied_alias.each do |alias_, value|
-      self.alias_usages[alias_].count += 1
-    end
+    alias_ = self.alias_list.applied_alias(command)
+    self.alias_usages[alias_].count += 1 if alias_
   end
 
   def shortenable?(alias_, command)

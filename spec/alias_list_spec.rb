@@ -28,11 +28,11 @@ describe AliasList do
 
   describe "applied_alias" do
     it "should get the fact that command `l` can use alias `l`" do
-      @alias_list.applied_alias("l").should include ["l", "ls -la"]
+      @alias_list.applied_alias("l").should == "l"
     end
 
     it "should get the fact that command `l -h` can use alias `l`" do
-      @alias_list.applied_alias("l -h").should include ["l", "ls -la"]
+      @alias_list.applied_alias("l -h").should == "l"
     end
   end
 

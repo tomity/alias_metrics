@@ -30,16 +30,9 @@ class AliasList
    command
   end
 
-  #NOTE: Since #command >> #alias, this process do fastly
   def applied_alias(command)
-   ret = []
-   @alias_hash.each_pair do |alias_, real|
-     if used_subcommand?(command, alias_)
-       command = command.sub(alias_, real)
-       ret << [alias_, real]
-     end
-   end
-   ret
+   alias_ = command.split(/\s/).first
+   @alias_hash.has_key?(alias_) ? alias_ : nil
   end
 
   #NOTE: Since #command >> #alias, this process do fastly
