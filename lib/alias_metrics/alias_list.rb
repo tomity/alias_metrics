@@ -30,7 +30,7 @@ class AliasList
    command
   end
 
-  def applied_alias(command)
+  def appliable_alias(command)
    alias_ = command.split(/\s/).first
    @alias_hash.has_key?(alias_) ? alias_ : nil
   end

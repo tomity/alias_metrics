@@ -72,7 +72,7 @@ class CommandHistory
   end
 
   def update_alias_usages(command)
-    alias_ = self.alias_list.applied_alias(command)
+    alias_ = self.alias_list.appliable_alias(command)
     self.alias_usages[alias_].count += 1 if alias_
   end
 
