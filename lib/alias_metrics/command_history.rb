@@ -64,7 +64,8 @@ class CommandHistory
   def update_shortenables(command)
     if alias_list.shortenable?(command)
       shortenable_alias_list = alias_list.shortenable_alias(command)
-      shortenable_alias_list.each do |alias_, extension|
+      shortenable_alias_list.each do |alias_|
+        extension = alias_list.alias_hash[alias_]
         self.shortenables[alias_].count += 1 if shortenable?(alias_, extension)
       end
     end

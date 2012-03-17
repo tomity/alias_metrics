@@ -60,7 +60,7 @@ describe AliasList do
 
   describe "shortenable_alias" do
     it "should get the fact the command `ls -la` can be shortenable by the alias `l`" do
-      @alias_list.shortenable_alias("ls -la").should include ["l", "ls -la"]
+      @alias_list.shortenable_alias("ls -la").should include "l"
     end
   end
 

@@ -49,7 +49,7 @@ class AliasList
    ret = []
    @alias_hash.each_pair do |alias_, real|
      if used_subcommand?(command, real)
-       ret << [alias_, real]
+       ret << alias_
      end
    end
    ret
