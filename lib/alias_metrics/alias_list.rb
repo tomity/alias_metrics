@@ -4,8 +4,8 @@ class AliasList
   def self.load_from_lines(lines)
     alias_hash = Hash::new
     lines.each do |line|
-      key, value = separate_key_value_from_alias_line(line)
-      alias_hash[key] = value
+      alias_, real = separate_key_value_from_alias_line(line)
+      alias_hash[alias_] = real
     end
     AliasList.new(alias_hash)
   end
@@ -14,17 +14,17 @@ class AliasList
     alias_hash = Hash::new
     STDIN.each do |line|
       line.chomp!
-      key, value = separate_key_value_from_alias_line(line)
-      alias_hash[key] = value
+      alias_, real= separate_key_value_from_alias_line(line)
+      alias_hash[alias_] = real
     end
     AliasList.new(alias_hash)
   end
 
   #NOTE: Since #command >> #alias, this process do fastly
   def expand_command(command)
-   @alias_hash.each_pair do |key, value|
-     if used_subcommand?(command, key)
-       command = command.sub(key, value)
+   @alias_hash.each_pair do |alias_, real|
+     if used_subcommand?(command, alias_)
+       command = command.sub(alias_, real)
      end
    end
    command
@@ -33,10 +33,10 @@ class AliasList
   #NOTE: Since #command >> #alias, this process do fastly
   def applied_alias(command)
    ret = []
-   @alias_hash.each_pair do |key, value|
-     if used_subcommand?(command, key)
-       command = command.sub(key, value)
-       ret << [key, value]
+   @alias_hash.each_pair do |alias_, real|
+     if used_subcommand?(command, alias_)
+       command = command.sub(alias_, real)
+       ret << [alias_, real]
      end
    end
    ret
@@ -44,8 +44,8 @@ class AliasList
 
   #NOTE: Since #command >> #alias, this process do fastly
   def shortenable?(command)
-    @alias_hash.values.each do |value|
-      if used_subcommand?(command, value)
+    @alias_hash.values.each do |real|
+      if used_subcommand?(command, real)
         return true
       end
     end
@@ -54,9 +54,9 @@ class AliasList
 
   def shortenable_alias(command)
    ret = []
-   @alias_hash.each_pair do |key, value|
-     if used_subcommand?(command, value)
-       ret << [key, value]
+   @alias_hash.each_pair do |alias_, real|
+     if used_subcommand?(command, real)
+       ret << [alias_, real]
      end
    end
    ret
@@ -64,9 +64,9 @@ class AliasList
 
   def shorten_command(command)
     ret = Array.new
-    @alias_hash.each_pair do |key, value|
-      if used_subcommand?(command, value)
-        ret << command.sub(value, key)
+    @alias_hash.each_pair do |alias_, real|
+      if used_subcommand?(command, real)
+        ret << command.sub(real, alias_)
       end
     end
     ret
@@ -84,11 +84,11 @@ class AliasList
     [key, value]
   end
 
-  def self.remove_single_quotes(value)
-    if value[0, 1] == "'" and value[-1, 1] == "'"
-      value = value[1..-2]
+  def self.remove_single_quotes(real)
+    if real[0, 1] == "'" and real[-1, 1] == "'"
+      real = real[1..-2]
     end
-    value
+    real
   end
 
   def used_subcommand?(command, alias_)
