@@ -37,9 +37,9 @@ class AliasList
 
   #NOTE: Since #command >> #alias, this process do fastly
   def shortenable?(command)
-    @alias_hash.values.each do |real|
+    @alias_hash.each_pair do |alias_, real|
       if used_subcommand?(command, real)
-        return true
+        return true if real.length > alias_.length
       end
     end
     false
@@ -49,7 +49,7 @@ class AliasList
    ret = []
    @alias_hash.each_pair do |alias_, real|
      if used_subcommand?(command, real)
-       ret << alias_
+       ret << alias_ if real.length > alias_.length
      end
    end
    ret
@@ -59,7 +59,7 @@ class AliasList
     ret = Array.new
     @alias_hash.each_pair do |alias_, real|
       if used_subcommand?(command, real)
-        ret << command.sub(real, alias_)
+        ret << command.sub(real, alias_) if real.length > alias_.length
       end
     end
     ret
