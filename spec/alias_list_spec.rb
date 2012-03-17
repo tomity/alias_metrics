@@ -60,15 +60,27 @@ describe AliasList do
 
   describe "shortenable_alias" do
     it "should get the fact the command `ls -la` can be shortenable by the alias `l`" do
-      @alias_list.shortenable_alias("ls -la").should == ["l"]
+      aliass = @alias_list.shortenable_alias("ls -la")
+      aliass.size.should == 1
+      aliass.should include "l"
     end
   end
 
+:a
   describe "shorten_command" do
     it "should shorten the command `git reset --hard HEAD\^` to `grhh` or `g reset --hard HEAD\^`" do
       alias_list = AliasList.load_from_lines(["g=git", "grhh='git reset --hard HEAD\^'"])
-      alias_list.shorten_command("git reset --hard HEAD\^").should include "grhh"
-      alias_list.shorten_command("git reset --hard HEAD\^").should include "g reset --hard HEAD\^"
+      shorten_commands = alias_list.shorten_command("git reset --hard HEAD\^")
+      shorten_commands.size.should == 2
+      shorten_commands.should include "grhh"
+      shorten_commands.should include "g reset --hard HEAD\^"
+    end
+
+    it "should shorten the command `git reset --hard HEAD\^` to `grhh` or `g reset --hard HEAD\^`" do
+      alias_list = AliasList.load_from_lines(["l='ls -la'", "sl=ls"])
+      shorten_commands = alias_list.shorten_command("ls -la")
+      shorten_commands.size.should == 1
+      shorten_commands.should include "l"
     end
   end
 
