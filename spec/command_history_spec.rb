@@ -1,4 +1,5 @@
 require "alias_metrics"
+include AliasMetrics
 
 describe CommandHistory do
   before do

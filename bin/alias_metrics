@@ -2,6 +2,7 @@
 lib = File.dirname(__FILE__) + '/../lib/'
 $:.unshift lib unless $:.include?(lib)
 require "alias_metrics"
+include AliasMetrics
 
 @alias_list = AliasList.load_from_stdin
 @history = CommandHistory.load_from_zsh_history(@alias_list)
