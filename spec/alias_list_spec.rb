@@ -76,6 +76,14 @@ describe AliasList do
       shorten_commands.should include "g reset --hard HEAD\^"
     end
 
+    it "should shorten the command `g reset --hard HEAD\^` to `grhh` or `g reset --hard HEAD\^`" do
+      alias_list = AliasList.load_from_lines(["g=git", "grhh='git reset --hard HEAD\^'"])
+      shorten_commands = alias_list.shorten_command("g reset --hard HEAD\^")
+      shorten_commands.size.should == 2
+      shorten_commands.should include "grhh"
+      shorten_commands.should include "g reset --hard HEAD\^"
+    end
+
     it "should shorten the command `git reset --hard HEAD\^` to `grhh` or `g reset --hard HEAD\^`" do
       alias_list = AliasList.load_from_lines(["l='ls -la'", "sl=ls"])
       shorten_commands = alias_list.shorten_command("ls -la")

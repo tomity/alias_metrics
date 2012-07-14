@@ -70,10 +70,11 @@ module AliasMetrics
     end
 
     def shorten_command(command)
+      expanded = expand_command(command)
       ret = Array.new
       @alias_hash.each_pair do |alias_, real|
-        if used_subcommand?(command, real)
-          ret << command.sub(real, alias_) if real.length > alias_.length
+        if used_subcommand?(expanded, real)
+          ret << expanded.sub(real, alias_) if real.length > alias_.length
         end
       end
       ret
