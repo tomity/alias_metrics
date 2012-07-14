@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    alias_metrics (0.1.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -22,6 +27,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  alias_metrics!
   fuubar (~> 1.0.0)
   rake (~> 0.9.2.2)
   rspec (~> 2.0)
