@@ -8,11 +8,12 @@ include AliasMetrics
 @history = CommandHistory.load_from_zsh_history(@alias_list)
 fragments = @history.fragment.values.select{|a| a.count >= 5}
 max_fragment_size = fragments.map{|a| a.body.size }.max
+puts "types\tcount\tcommand#{" " * (max_fragment_size - "command".size)} => shorten command"
 fragments.sort{|a, b| a.types <=> b.types }.reverse.each do |value|
   if @alias_list.shortenable?(value.body)
-    puts "#{value.types}\t#{value.body + " " * (max_fragment_size - value.body.size)} => #{@alias_list.shorten_command(value.body).map{|h| "\"#{h}\""}.join(",")}"
+    puts "#{value.types}\t#{value.count}\t#{value.body + " " * (max_fragment_size - value.body.size)} => #{@alias_list.shorten_command(value.body).map{|h| "\"#{h}\""}.join(",")}"
   else
-    puts "#{value.types}\t#{value.body + " " * (max_fragment_size - value.body.size)} => no alias"
+    puts "#{value.types}\t#{value.count}\t#{value.body + " " * (max_fragment_size - value.body.size)} => no alias"
   end
 end
 
