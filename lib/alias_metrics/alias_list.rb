@@ -2,6 +2,16 @@ module AliasMetrics
   class AliasList
     attr_accessor :alias_hash
 
+    def self.load(io)
+      alias_hash = Hash::new
+      io.each do |line|
+        line.chomp!
+        alias_, real = separate_key_value_from_alias_line(line)
+        alias_hash[alias_] = real
+      end
+      AliasList.new(alias_hash)
+    end
+
     def self.load_from_lines(lines)
       alias_hash = Hash::new
       lines.each do |line|
@@ -12,13 +22,13 @@ module AliasMetrics
     end
 
     def self.load_from_stdin
-      alias_hash = Hash::new
-      STDIN.each do |line|
-        line.chomp!
-        alias_, real= separate_key_value_from_alias_line(line)
-        alias_hash[alias_] = real
+      AliasList.load(STDIN)
+    end
+
+    def self.load_from_file(file)
+      open(file) do |fh|
+        AliasList.load(fh)
       end
-      AliasList.new(alias_hash)
     end
 
     #NOTE: Since #command >> #alias, this process do fastly
