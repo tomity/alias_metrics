@@ -1,6 +1,7 @@
 This tool is to visualize alias usage to parse command history. You can evaluate whether you use alias efficiently or not.
 * It can show reduced types and more redusable types
 * It can show how degree you use each alias
+* It can show candidate alias_commands
 
 The visabliable shell scripts is the followings:
 * zsh (${HOME}/.zsh-history)
@@ -14,6 +15,7 @@ gem install alias_metrics
 How to use:
 
 $ alias | alias_metrics
+$ alias | alias_candidates
 
 
 Case Study:
@@ -41,13 +43,27 @@ If you use alias all, you can reduce more 3.98% types (11575 / 290970)
 
  ...
 <<
-I regist alias g=`git`, but I often forgot to use this alias. This result show I typed "git" 1530 times. So I can reduce 1530 * 2 = 3060 types by typing "g" instead of "git".
+I regist alias g=`git`, but I often forgot to use this alias. This result show I typed "git" 1530 times. So I can reduce 1530 * (3-1) = 3060 types by typing "g" instead of "git".
 
+$ alias | alias_candidates
+>>
+types   count   command                    => shorten command
+6510    651     git status                 => "g status","gst"
+5979    1993    git                        => "g"
+4860    972     ls -G                      => "ls -G"
+3627    1209    vim                        => no alias
+2912    182     bundle exec rake           => "be rake"
+2900    290     git commit                 => "g commit"
+2695    245     bundle exec                => "be"
+2544    159     git flow feature           => "g flow feature"
+2268    324     git add                    => "g add","ga"
+...
+<<
+I often use "vim" command. But "vim" command has no alias. If I regsit alias v=`vim`, I can reduce 1209 * (3-1) = 2418 types by typing "v" instead of "vim".
 
 Todo:
 
 * It can parse other shell scrpt(bash, csh, etc...)
-* Add the function that recommends alias that can reduce your types by setting it
 * Add the function that show Gold Standard
 * Acceleration
 
