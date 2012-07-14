@@ -1,13 +1,38 @@
 module AliasMetrics
   class CommandHistory
+    ZSH_HISTORY_FILE = "#{ENV["HOME"]}/.zsh_history"
+
+    class << CommandHistory
+      def load_from_zsh_history(alias_list, history_file = ZSH_HISTORY_FILE)
+        commands = []
+        open(history_file) do |fh|
+          fh.each do |line|
+            line.chomp!
+            next if line == ""
+            begin
+              command = parse_command_by_zsh_history_line(line)
+              commands << command if command
+            rescue ArgumentError #invalid byte sequence in UTF-8
+              #do nothing
+            end
+          end
+        end
+        CommandHistory.new(commands, alias_list)
+      end
+
+      private
+      def parse_command_by_zsh_history_line(line)
+        command = line.split(/;/)[1]
+        return command
+      end
+    end
+
     attr_accessor :commands
     attr_accessor :shorten_count
     attr_accessor :shortenables
     attr_accessor :alias_usages
     attr_accessor :alias_list
     attr_accessor :fragment
-
-    ZSH_HISTORY_FILE = "#{ENV["HOME"]}/.zsh_history"
 
     def initialize(commands, alias_list)
       self.alias_list = alias_list
@@ -38,29 +63,8 @@ module AliasMetrics
       self.alias_usages   = self.alias_usages.freeze
     end
 
-    def self.load_from_zsh_history(alias_list, history_file = ZSH_HISTORY_FILE)
-      commands = []
-      open(history_file) do |fh|
-        fh.each do |line|
-          line.chomp!
-          next if line == ""
-          begin
-            command = parse_command_by_zsh_history_line(line)
-            commands << command if command
-          rescue ArgumentError #invalid byte sequence in UTF-8
-            #do nothing
-          end
-        end
-      end
-      CommandHistory.new(commands, alias_list)
-    end
-
     private
 
-    def self.parse_command_by_zsh_history_line(line)
-      command = line.split(/;/)[1]
-      return command
-    end
 
     def update_shortenables(command)
       if alias_list.shortenable?(command)
